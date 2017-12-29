@@ -1,7 +1,7 @@
 import dropbox
 import datetime
 
-FILE_DESTINATION = '/parko_db/'
+FILE_DESTINATION = '/example_root_here/'
 DROPBOX_AUTH_KEY = 'token-here'
 
 BACKUP_FILES = [
