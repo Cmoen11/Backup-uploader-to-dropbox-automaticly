@@ -1,11 +1,14 @@
 import dropbox
 import datetime
+import schedule
+import time
 
-FILE_DESTINATION = '/example_root_here/'
+FILE_DESTINATION = '/sql_backups/'
 DROPBOX_AUTH_KEY = 'token-here'
 
 BACKUP_FILES = [
-    {'FILE_NAME': 'test.sql', 'FILE_TYPE': 'sql', 'IDENTIFIER': 'test-backup-file'}
+    {'FILE_NAME': 'example-file1.sql', 'FILE_TYPE': 'sql', 'IDENTIFIER': 'example-file1'},
+    {'FILE_NAME': 'example-file2.sql', 'FILE_TYPE': 'sql', 'IDENTIFIER': 'example-file2'}
 
 ]
 
@@ -36,5 +39,15 @@ def make_backup(file_data):
     print("File uploaded. Have a nice day :-)")
 
 
-for backup_file in BACKUP_FILES:
-    make_backup(backup_file)
+def job():
+    for backup_file in BACKUP_FILES:
+        make_backup(backup_file)
+
+schedule.every().day.at("00:10").do(job)
+
+job()
+
+while True:
+    schedule.run_pending()
+    time.sleep(60) # wait one minute
+
