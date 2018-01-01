@@ -8,7 +8,7 @@ It will also sort the files into directories for you.
 
 
 ## install
-pip install dropbox
+pip install dropbox <br>
 pip install schedule
 
 install the python file into the directory with the files you wish to be uploaded.
