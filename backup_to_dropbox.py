@@ -6,6 +6,11 @@ import time
 FILE_DESTINATION = '/sql_backups/'
 DROPBOX_AUTH_KEY = 'token-here'
 
+# if this is set to true, the format for uploading files will be year/month/day
+# otherwise every file will be under FILE_DESTINATION path.
+ORGANIZE_FOLDERS_AFTER_DATE = True
+
+# local files that should be sent to dropbox.
 BACKUP_FILES = [
     {'FILE_NAME': 'example-file1.sql', 'FILE_TYPE': 'sql', 'IDENTIFIER': 'example-file1'},
     {'FILE_NAME': 'example-file2.sql', 'FILE_TYPE': 'sql', 'IDENTIFIER': 'example-file2'}
@@ -13,15 +18,22 @@ BACKUP_FILES = [
 ]
 
 
-def make_backup(file_data):
-    # connect to the dropbox applicaton.
-    dbx = dropbox.Dropbox(DROPBOX_AUTH_KEY)
+# this will create a backup of a file dict
+def make_backup(file_data, dbx):
 
     # grab current time and create a path for the file.
     now = datetime.datetime.now()
-    path = FILE_DESTINATION + '{}/{}/{}/{}.{}'\
-        .format(now.year, now.month, now.day, '{}-{}-{} - {}'
-                .format(now.day, now.month, now.year, file_data['IDENTIFIER']), file_data['FILE_TYPE'])
+
+    # for sorting by date by directories. Current format is; year/month/day
+    if ORGANIZE_FOLDERS_AFTER_DATE:
+        path = FILE_DESTINATION + '{}/{}/{}/{}.{}'\
+            .format(now.year, now.month, now.day, '{}-{}-{} - {}'
+                    .format(now.day, now.month, now.year, file_data['IDENTIFIER']), file_data['FILE_TYPE'])
+
+    # for sorting into the same directory.
+    else:
+        path = FILE_DESTINATION + '{}-{}-{} - {}'\
+            .format(now.day, now.month, now.year, file_data['IDENTIFIER'], file_data['FILE_TYPE'])
 
     # open the selected file.
     file = open(file_data['FILE_NAME'], 'rb')
@@ -40,13 +52,17 @@ def make_backup(file_data):
 
 
 def job():
-    for backup_file in BACKUP_FILES:
-        make_backup(backup_file)
+    # connect to the dropbox applicaton.
+    dbx = dropbox.Dropbox(DROPBOX_AUTH_KEY)
 
+    # for every file inside BACKUP FILES, send them to backup method.
+    for backup_file in BACKUP_FILES:
+        make_backup(backup_file, dbx)
+
+# schedule the job for every day at 00:10 o clock.
 schedule.every().day.at("00:10").do(job)
 
-job()
-
+# now run a check every minute to check if there is any pending schedules.
 while True:
     schedule.run_pending()
     time.sleep(60) # wait one minute
