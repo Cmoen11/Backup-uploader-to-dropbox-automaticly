@@ -38,7 +38,6 @@ def make_backup(file_data, dbx):
     # open the selected file.
     file = open(file_data['FILE_NAME'], 'rb')
 
-    print("Connected to account " + dbx.users_get_current_account()._name_value.display_name)
     print("Uploading file to dropbox. Destination: " + path)
 
     # Read the file in and write in to dropbox.
@@ -54,6 +53,8 @@ def make_backup(file_data, dbx):
 def job():
     # connect to the dropbox applicaton.
     dbx = dropbox.Dropbox(DROPBOX_AUTH_KEY)
+
+    print("Connected to account " + dbx.users_get_current_account()._name_value.display_name)
 
     # for every file inside BACKUP FILES, send them to backup method.
     for backup_file in BACKUP_FILES:
