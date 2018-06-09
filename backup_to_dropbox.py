@@ -38,7 +38,7 @@ def make_backup(file_data, dbx):
     # open the selected file.
     file = open(file_data['FILE_NAME'], 'rb')
 
-    print("Uploading file to dropbox. Destination: " + path)
+    print("Uploading file '{}' to dropbox. Destination: {}".format(file_data['FILE_NAME'], path))
 
     # Read the file in and write in to dropbox.
     try:
@@ -47,7 +47,6 @@ def make_backup(file_data, dbx):
     finally:
         file.close()
 
-    print("File uploaded. Have a nice day :-)")
 
 
 def job():
@@ -59,6 +58,8 @@ def job():
     # for every file inside BACKUP FILES, send them to backup method.
     for backup_file in BACKUP_FILES:
         make_backup(backup_file, dbx)
+
+    print("job uploaded. Have a nice day :-)")
 
 # schedule the job for every day at 00:10 o clock.
 schedule.every().day.at("00:10").do(job)
