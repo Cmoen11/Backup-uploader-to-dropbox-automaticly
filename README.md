@@ -1,8 +1,8 @@
-# Backup files to dropbox using python automaticly
+# Backup files to Dropbox using python automatically
 
-Smal little handy script that take advantage of the dropbox module to upload one or multiple files onto dropbox. 
+A small little handy script that takes advantage of the Dropbox module to upload one or multiple files to Dropbox. 
 
-I made this because I wanted to get my backup sql files uploaded to dropbox to ensure that I do not lose them, I figure that someone may have use for it also, so feel free to take and edit it as you need to make it work for you! 
+I made this because I wanted to get my backup SQL files uploaded to Dropbox to ensure that I do not lose them, I figure that someone may have the use for it also, so feel free to take and edit it as you need to make it work for you! 
 
 It will also sort the files into directories for you.
 
@@ -13,5 +13,4 @@ pip install schedule
 
 install the python file into the directory with the files you wish to be uploaded.
 Edit the file to fit your files.
-
 
